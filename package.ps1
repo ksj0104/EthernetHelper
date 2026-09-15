@@ -7,7 +7,7 @@ Get-Content -LiteralPath $resultPath -Encoding UTF8
 $downloadPath = Join-Path $PSScriptRoot 'downloads'
 New-Item -ItemType Directory -Path $downloadPath -Force | Out-Null
 $zipPath = Join-Path $downloadPath 'EthernetHelper-Windows.zip'
-$files = @('EthernetHelper.exe', 'Engine.ps1', 'README.md') | ForEach-Object { Join-Path $PSScriptRoot $_ }
+$files = @('EthernetHelper.exe', 'Engine.ps1', 'README.md', 'README.ko.md', 'README.en.md', 'README.ja.md') | ForEach-Object { Join-Path $PSScriptRoot $_ }
 Compress-Archive -LiteralPath $files -DestinationPath $zipPath -Force
 $hash = (Get-FileHash -LiteralPath $zipPath -Algorithm SHA256).Hash.ToLowerInvariant()
 [IO.File]::WriteAllText((Join-Path $downloadPath 'SHA256SUMS.txt'), "$hash  EthernetHelper-Windows.zip`n", [Text.Encoding]::ASCII)
