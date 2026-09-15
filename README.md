@@ -37,6 +37,10 @@ Diagnosis does not change settings. Repair and restore request administrator per
 
 ## 다운로드 / Download / ダウンロード
 
+**v1.0.1:** 다운로드 후 ‘작업 결과를 받지 못했습니다 (종료 코드 1)’ 오류를 수정했습니다. 기존 창을 닫고 최신 ZIP을 새 폴더에 압축 풀어 실행하세요. 앱 내부 스크립트 실행을 위해 ZIP 차단을 수동 해제할 필요가 없어졌습니다.
+
+**v1.0.1 fixes startup failure after download (exit code 1).** Close the old app and extract the latest ZIP into a new folder. Manual ZIP unblocking is no longer required for the app's script launch. Windows publisher warnings and organization policies still apply.
+
 ### [EthernetHelper-Windows.zip](https://raw.githubusercontent.com/ksj0104/EthernetHelper/master/downloads/EthernetHelper-Windows.zip)
 
 - **한국어:** ZIP 다운로드 → 우클릭 → 속성 → 차단 해제(있으면) → 모두 압축 풀기 → `EthernetHelper.exe` 더블 클릭.
@@ -57,6 +61,7 @@ Regular users only need the ZIP above. To rebuild from source, run these command
 powershell -NoProfile -ExecutionPolicy RemoteSigned -File .\build.ps1
 powershell -NoProfile -ExecutionPolicy RemoteSigned -File .\Engine.Tests.ps1
 powershell -NoProfile -ExecutionPolicy RemoteSigned -File .\package.ps1
+powershell -NoProfile -ExecutionPolicy RemoteSigned -File .\Download.Tests.ps1
 ```
 
 Unblock downloaded source ZIPs before extraction. The build uses the Windows .NET Framework C# compiler. The app uses Windows PowerShell 5.1 and .NET Framework 4.x.
@@ -64,6 +69,7 @@ Unblock downloaded source ZIPs before extraction. The build uses the Windows .NE
 - `EthernetHelper.cs`: interface; `Engine.ps1`: diagnosis, repair and restore.
 - `Engine.Tests.ps1`: tests with network mutation functions mocked; does not perform actual repairs.
 - `package.ps1`: rebuilds, runs the executable self-test and packages all user guides.
+- `Download.Tests.ps1`: reproduces the old download-marker failure and checks read-only inventory using the packaged app's launch arguments. Runtime execution policy applies only to the child process; machine/user Group Policy still takes precedence.
 - `downloads/SHA256SUMS.txt`: SHA-256 checksum for the download ZIP.
 
 [문제 제보 / Report an issue / 不具合の報告](https://github.com/ksj0104/EthernetHelper/issues)

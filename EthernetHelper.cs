@@ -82,6 +82,17 @@ namespace EthernetHelper
             return quoted.ToString();
         }
 
+        // Scope the policy to this child process. Machine/User Group Policy still takes precedence.
+        public static string EngineArguments(string enginePath, string action, string adapterGuid, string outputPath)
+        {
+            if (action != "Inventory" && action != "Diagnose" && action != "Repair" && action != "Restore")
+                throw new ArgumentException("지원하지 않는 작업입니다.", "action");
+            string arguments = "-NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File " + QuoteArgument(enginePath) + " -Action " + QuoteArgument(action);
+            if (action != "Inventory" && !String.IsNullOrWhiteSpace(adapterGuid))
+                arguments += " -AdapterGuid " + QuoteArgument(adapterGuid);
+            return arguments + " -OutputPath " + QuoteArgument(outputPath);
+        }
+
         [STAThread]
         public static int Main(string[] args)
         {
@@ -395,9 +406,7 @@ namespace EthernetHelper
                 Directory.CreateDirectory(runDirectory);
                 activeOutputPath = Path.Combine(runDirectory, DateTime.Now.ToString("yyyyMMdd-HHmmss") + "-" + Guid.NewGuid().ToString("N") + ".json");
                 string powershell = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "WindowsPowerShell", "v1.0", "powershell.exe");
-                string arguments = "-NoLogo -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -File " + Program.QuoteArgument(enginePath) + " -Action " + Program.QuoteArgument(action);
-                if (selected != null && action != "Inventory") arguments += " -AdapterGuid " + Program.QuoteArgument(selected.guid);
-                arguments += " -OutputPath " + Program.QuoteArgument(activeOutputPath);
+                string arguments = Program.EngineArguments(enginePath, action, selected == null ? null : selected.guid, activeOutputPath);
                 ProcessStartInfo info = new ProcessStartInfo(powershell, arguments);
                 info.WorkingDirectory = appDirectory;
                 info.UseShellExecute = elevate;
@@ -408,8 +417,9 @@ namespace EthernetHelper
                     info.CreateNoWindow = true;
                     info.RedirectStandardError = true;
                     info.RedirectStandardOutput = true;
-                    info.StandardErrorEncoding = Encoding.UTF8;
-                    info.StandardOutputEncoding = Encoding.UTF8;
+                    // Windows PowerShell startup errors use the local console code page.
+                    info.StandardErrorEncoding = Encoding.GetEncoding(System.Globalization.CultureInfo.CurrentCulture.TextInfo.OEMCodePage);
+                    info.StandardOutputEncoding = info.StandardErrorEncoding;
                 }
                 activeProcess = new Process { StartInfo = info };
                 lock (capturedOutput) capturedOutput.Length = 0;
@@ -504,7 +514,10 @@ namespace EthernetHelper
                         File.WriteAllText(failurePath, captured, new UTF8Encoding(true));
                         lastLogPath = failurePath;
                     }
-                    ShowFailure("작업 결과를 받지 못했습니다", "작업이 종료되었지만 결과 파일이 만들어지지 않았습니다. 기록 폴더에서 오류 기록을 확인하고 다시 진단해 주세요. (종료 코드 " + exitCode.ToString() + ")");
+                    if (captured.IndexOf("UnauthorizedAccess", StringComparison.OrdinalIgnoreCase) >= 0 || captured.IndexOf("PSSecurityException", StringComparison.OrdinalIgnoreCase) >= 0)
+                        ShowFailure("Windows에서 실행을 차단했습니다", "진단 스크립트를 실행할 권한이 없습니다. 회사·학교 PC라면 관리자에게 문의하세요. ‘기록 폴더’에서 오류 내용을 확인할 수 있습니다.");
+                    else
+                        ShowFailure("작업 결과를 받지 못했습니다", "작업이 종료되었지만 결과 파일이 만들어지지 않았습니다. 기록 폴더에서 오류 기록을 확인하고 다시 진단해 주세요. (종료 코드 " + exitCode.ToString() + ")");
                     return;
                 }
                 EngineResult result = EngineResult.Parse(File.ReadAllText(resultPath, Encoding.UTF8));

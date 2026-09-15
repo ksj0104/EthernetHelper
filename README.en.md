@@ -16,6 +16,8 @@ Opening it starts a check. **Checking does not change network settings.** A repa
 
 ## 2. Download
 
+**v1.0.1 fixes startup failure after download (exit code 1).** Close the old app and extract the latest ZIP into a new folder. Manual ZIP unblocking is no longer needed for the app's script launch; that step below is optional. Windows publisher warnings and organization policies still apply.
+
 1. **[Click here to download the Windows ZIP](https://raw.githubusercontent.com/ksj0104/EthernetHelper/master/downloads/EthernetHelper-Windows.zip)**. No GitHub account is required.
 2. Wait for completion. A ZIP is a compressed package containing several files.
 3. Press **Windows key + E** to open File Explorer, then select **Downloads**.
