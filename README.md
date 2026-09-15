@@ -1,4 +1,4 @@
-﻿# EthernetHelper · 이더넷 연결 도우미
+﻿# EthernetHelper — Windows 이더넷 진단 · IP 충돌 복구
 
 **Windows Ethernet diagnostics, IP conflict repair & DHCP troubleshooting — no installer required.**
 
@@ -51,6 +51,24 @@ Diagnosis does not change settings. Repair and restore request administrator per
 
 Windows 10/11용입니다. 실제 PC 검증은 Windows 10 x64에서 수행했으며 Windows 11은 추가 검증이 필요합니다.
 Designed for Windows 10/11; tested on a Windows 10 x64 PC. Windows 11 still needs validation.
+
+## 연결 문제 FAQ / Ethernet troubleshooting FAQ
+
+### Windows에서 이더넷 연결 안됨, 무엇부터 확인하나요?
+
+랜선 양쪽이 컴퓨터와 공유기에 연결되어 있는지 확인한 뒤 **진단하기**를 누르세요. EthernetHelper는 유선 어댑터, IP 주소, 게이트웨이와 실제 통신 상태를 확인합니다. 자세한 순서는 [한국어 사용 안내](README.ko.md)를 참고하세요.
+
+### IP 주소 충돌이나 DHCP 오류도 복구하나요?
+
+진단에서 지원되는 문제로 확인된 경우 복구를 시도합니다. IP 충돌에서는 소프트웨어 MAC 주소를 변경해 다른 DHCP 주소 수신을 시도하고, DHCP 주소 수신 문제에서는 유선 어댑터를 재시작합니다. 공유기 설정이나 통신사 장애를 모두 해결하는 도구는 아닙니다.
+
+### Ethernet connected but no internet on Windows?
+
+Check the Ethernet cable first, then run **진단하기 (Diagnose)** to inspect the wired connection. A connected cable alone does not confirm internet access. See the [English Ethernet troubleshooting guide](README.en.md) for the steps and supported repairs.
+
+### Can I repair an IP address conflict without installing software?
+
+EthernetHelper is a portable Windows utility: extract the ZIP and run the EXE alongside Engine.ps1. Supported repairs require administrator permission. It does not automatically modify static-IP adapters or repair Wi-Fi connections.
 
 ## Development
 

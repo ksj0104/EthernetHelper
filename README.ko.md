@@ -1,4 +1,4 @@
-﻿# 이더넷 연결 도우미 — 쉬운 사용 안내
+﻿# 이더넷 연결 안됨 진단과 IP 충돌 복구 — EthernetHelper 사용 안내
 
 [언어 선택](README.md) · [English](README.en.md) · [日本語](README.ja.md)
 

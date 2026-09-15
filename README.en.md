@@ -1,4 +1,4 @@
-﻿# EthernetHelper — A beginner’s guide
+﻿# EthernetHelper — Windows Ethernet troubleshooting and IP conflict repair guide
 
 [Choose a language](README.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
 

@@ -1,4 +1,4 @@
-﻿# EthernetHelper — 初めての方向けガイド
+﻿# EthernetHelper — Windows有線LANの接続診断・IP競合修復ガイド
 
 [言語を選ぶ](README.md) · [한국어](README.ko.md) · [English](README.en.md)
 
