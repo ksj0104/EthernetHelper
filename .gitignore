@@ -1,0 +1,11 @@
+.idea/
+.vs/
+dist/
+EthernetHelper-ui-check.exe
+*-preview.png
+engine-live-diagnosis.json
+ui-selftest.txt
+VALIDATION.md
+tests/
+*.user
+*.log
